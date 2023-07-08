@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  kafka1:
+    image: confluentinc/cp-kafka
+    hostname: kafka1
+    ports:
+      - "9092:9092"
+    environment:
+
+      #Define the name for Broker and controller and protocols
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'BROKER'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+      #Define the ports used for broker, controller and external
+      KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+
+      # Default replication value is 3. Since we have only a single kafka instance, we have to reduce this value
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 2
+
+      # Following parameters are required to run Kafka in Kraft mode (without Zookeeper)
+      KAFKA_PROCESS_ROLES: 'controller,broker'
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093'
+      CLUSTER_ID: 'aiWo7IWazngRchmPES6q5A=='
+
+      # Required to avoid log spamming from MetdataLoader
+      KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
+
+
+  kafka2:
+    image: confluentinc/cp-kafka
+    hostname: kafka2
+    ports:
+      - "9093:9093"
+    environment:
+
+      #Define the name for Broker and controller and protocols
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'BROKER'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+      #Define the ports used for broker, controller and external
+      KAFKA_LISTENERS: BROKER://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://:9093
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9093
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+
+      # Default replication value is 3. Since we have only a single kafka instance, we have to reduce this value
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 2
+
+      # Following parameters are required to run Kafka in Kraft mode (without Zookeeper)
+      KAFKA_PROCESS_ROLES: 'controller,broker'
+      KAFKA_NODE_ID: 2
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093'
+      CLUSTER_ID: 'aiWo7IWazngRchmPES6q5A=='
+
+      # Required to avoid log spamming from MetdataLoader
+      KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
+
+
+#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0 // Unclear if required
