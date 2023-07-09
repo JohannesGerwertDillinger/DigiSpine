@@ -32,3 +32,14 @@ MYCOUNTER=0; while true; do let MYCOUNTER++; echo "MyCounter $MYCOUNTER"; sleep 
 ```shell
 ./kafka-console-consumer.sh --topic flugdaten --bootstrap-server=localhost:9092
 ```
+
+## Kafka connect test 
+```shell
+michael@Michaels-Mac-mini-2 etc % ~/Downloads/kafka_2.13-3.5.0/bin/connect-standalone.sh connect-standolone.properties connect-console-sink.properties
+```
+
+
+## General notes:
+- Kafka tools support multiple bootstrap-servers, so that only one must be available to detect the entire cluster
+./kafka-topics.sh --describe --topic flugdaten --bootstrap-server 127.0.0.1:9095,127.0.0.1:9093,127.0.0.1:9092
+
