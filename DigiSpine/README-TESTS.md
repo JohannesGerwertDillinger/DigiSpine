@@ -14,3 +14,21 @@ topic "flugdaten" with 1 partitions:
 partition 0, leader 2, replicas: 2, isrs: 2
 michael@Michaels-Mac-mini-2 .docker % 
 ```
+
+### Test restarting single kafka instances
+
+
+```bash 
+./kafka-topics.sh --delete --topic flugdaten --bootstrap-server 127.0.0.1:9092
+```
+
+./kafka-topics.sh --create --topic flugdaten --partitions 1 --replication-factor 3 --bootstrap-server 127.0.0.1:9092
+
+
+```shell
+MYCOUNTER=0; while true; do let MYCOUNTER++; echo "MyCounter $MYCOUNTER"; sleep 1; done | ./kafka-console-producer.sh --topic flugdaten --bootstrap-server=localhost:9092
+```
+
+```shell
+./kafka-console-consumer.sh --topic flugdaten --bootstrap-server=localhost:9092
+```
