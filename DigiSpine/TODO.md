@@ -6,7 +6,9 @@
 - [ ] https://github.com/lensesio/stream-reactor
   - Validate supported 
 - [ ] Document decisions 
-- [ ] Secure external connection protocols?!
+- [ ] Secure external connection protocols?! (e.g. SSL, alternatively use encrypted overlay network?)
+  - https://docs.confluent.io/platform/current/kafka/authentication_ssl.html
+  - https://dockerlabs.collabnix.com/advanced/security/networking/
 
 ## Decisions so far
 - [x] Which image -> Confluent due to their support time and possibility to commercial support  
