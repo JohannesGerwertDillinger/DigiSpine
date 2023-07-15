@@ -14,7 +14,7 @@ services:
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
       # TODO: Adjust advertised IP address from 'localhost:9092' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9099
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
@@ -31,6 +31,9 @@ services:
 
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
+
+    volumes:
+      - kafka-data:/var/lib/kafka/data
 
     healthcheck:
       test: nc -z localhost 9092 || exit -1
@@ -61,3 +64,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+
+volumes:
+  kafka-data:
