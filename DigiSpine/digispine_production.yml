@@ -35,6 +35,9 @@ services:
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
 
+    volumes:
+      - kafka1-data:/var/lib/kafka/data
+
     healthcheck:
       test: nc -z localhost 9092 || exit -1
       start_period: 15s
@@ -81,6 +84,9 @@ services:
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
 
+    volumes:
+      - kafka2-data:/var/lib/kafka/data
+
     healthcheck:
       test: nc -z localhost 9093 || exit -1
       start_period: 15s
@@ -109,7 +115,7 @@ services:
       # Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka3:29092,CONTROLLER://kafka3:29093,EXTERNAL://:9094
       # TODO: Adjust advertised IP address from 'localhost:9094' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9094
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka3:29092,EXTERNAL://localhost:9094
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -126,6 +132,9 @@ services:
 
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
+
+    volumes:
+      - kafka3-data:/var/lib/kafka/data
 
     healthcheck:
       test: nc -z localhost 9094 || exit -1
@@ -156,3 +165,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+
+volumes:
+  kafka1-data:
+  kafka2-data:
+  kafka3-data:
