@@ -9,7 +9,6 @@ services:
     ports:
       - "9092:9092"
     environment:
-
       #Define the name for Broker and controller and protocols
       KAFKA_INTER_BROKER_LISTENER_NAME: 'BROKER'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
@@ -30,6 +29,7 @@ services:
       KAFKA_PROCESS_ROLES: 'controller,broker'
       KAFKA_NODE_ID: 1
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+      # TODO: Generate ONE kafka-ID using ./bin/kafka-storage.sh random-uuid and set it to all instances
       CLUSTER_ID: 'aiWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
@@ -42,6 +42,11 @@ services:
       timeout: 10s
       retries: 10
 
+    deploy:
+      placement:
+        constraints:
+          # TODO: To ensure that kafka instances are not placed on the same VM, you should define different constraints such as manager or worker to ensure that at least two instances run on different VMs
+          - "node.role == manager"
 
   kafka2:
     image: confluentinc/cp-kafka
@@ -70,6 +75,7 @@ services:
       KAFKA_PROCESS_ROLES: 'controller,broker'
       KAFKA_NODE_ID: 2
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+      # TODO: Generate ONE kafka-ID using ./bin/kafka-storage.sh random-uuid and set it to all instances
       CLUSTER_ID: 'aiWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
@@ -81,6 +87,12 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+    deploy:
+      placement:
+        constraints:
+          # TODO: To ensure that kafka instances are not placed on the same VM, you should define different constraints such as manager or worker to ensure that at least two instances run on different VMs
+          - "node.role == manager"
 
   kafka3:
     image: confluentinc/cp-kafka
@@ -109,6 +121,7 @@ services:
       KAFKA_PROCESS_ROLES: 'controller,broker'
       KAFKA_NODE_ID: 3
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+      # TODO: Generate ONE kafka-ID using ./bin/kafka-storage.sh random-uuid and set it to all instances
       CLUSTER_ID: 'aiWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
@@ -120,6 +133,12 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+    deploy:
+      placement:
+        constraints:
+          # TODO: To ensure that kafka instances are not placed on the same VM, you should define different constraints such as manager or worker to ensure that at least two instances run on different VMs
+          - "node.role == manager"
 
   kafka-ui:
     container_name: kafka-ui
