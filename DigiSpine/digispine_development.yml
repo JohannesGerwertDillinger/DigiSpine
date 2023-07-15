@@ -4,7 +4,7 @@ services:
     image: confluentinc/cp-kafka
     hostname: kafka1
     ports:
-      - "9099:9092"
+      - "9092:9092"
     environment:
       #Define the name for Broker and controller and protocols
       KAFKA_INTER_BROKER_LISTENER_NAME: 'BROKER'
@@ -14,7 +14,7 @@ services:
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
       # TODO: Adjust advertised IP address from 'localhost:9092' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9099
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
