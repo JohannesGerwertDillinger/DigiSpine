@@ -1,3 +1,6 @@
+# Important note: For using this file, you must adjust some settings such as IP addresses to your environment.
+# These settings are highlighted by a TODO comment
+
 version: '3.8'
 services:
   kafka1:
@@ -14,6 +17,7 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
+      # TODO: Adjust advertised IP address from 'localhost:9092' to hostname or ip address of running system
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
@@ -53,6 +57,7 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://:9093
+      # TODO: Adjust advertised IP address from 'localhost:9093' to hostname or ip address of running system
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9093
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
@@ -91,6 +96,7 @@ services:
 
       # Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka3:29092,CONTROLLER://kafka3:29093,EXTERNAL://:9094
+      # TODO: Adjust advertised IP address from 'localhost:9094' to hostname or ip address of running system
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9094
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
@@ -119,7 +125,7 @@ services:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
-      - 8081:8080
+      - "8081:8080"
 
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
