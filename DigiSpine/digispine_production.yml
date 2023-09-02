@@ -37,12 +37,6 @@ services:
     volumes:
       - kafka1-data:/var/lib/kafka/data
 
-    healthcheck:
-      test: nc -z localhost 9092 || exit -1
-      start_period: 15s
-      interval: 5s
-      timeout: 10s
-      retries: 10
 
     deploy:
       placement:
@@ -54,7 +48,7 @@ services:
     image: confluentinc/cp-kafka
     hostname: kafka2
     ports:
-      - "9093:9093"
+      - "9093:9092"
     environment:
 
       #Define the name for Broker and controller and protocols
@@ -63,7 +57,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT
 
       #Define the ports used for broker, controller and external
-      KAFKA_LISTENERS: BROKER://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://:9093
+      KAFKA_LISTENERS: BROKER://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://:9092
       # TODO: Adjust advertised IP address from 'localhost:9093' to hostname or ip address of running system
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9093
 
@@ -85,13 +79,6 @@ services:
     volumes:
       - kafka2-data:/var/lib/kafka/data
 
-    healthcheck:
-      test: nc -z localhost 9093 || exit -1
-      start_period: 15s
-      interval: 5s
-      timeout: 10s
-      retries: 10
-
     deploy:
       placement:
         constraints:
@@ -102,7 +89,7 @@ services:
     image: confluentinc/cp-kafka
     hostname: kafka3
     ports:
-      - "9094:9094"
+      - "9094:9092"
     environment:
 
       # Define the name for Broker and controller and protocols
@@ -111,7 +98,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT
 
       # Define the ports used for broker, controller and external
-      KAFKA_LISTENERS: BROKER://kafka3:29092,CONTROLLER://kafka3:29093,EXTERNAL://:9094
+      KAFKA_LISTENERS: BROKER://kafka3:29092,CONTROLLER://kafka3:29093,EXTERNAL://:9092
       # TODO: Adjust advertised IP address from 'localhost:9094' to hostname or ip address of running system
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka3:29092,EXTERNAL://localhost:9094
 
@@ -132,13 +119,6 @@ services:
 
     volumes:
       - kafka3-data:/var/lib/kafka/data
-
-    healthcheck:
-      test: nc -z localhost 9094 || exit -1
-      start_period: 15s
-      interval: 5s
-      timeout: 10s
-      retries: 10
 
     deploy:
       placement:
