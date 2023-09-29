@@ -1,6 +1,9 @@
 # Important note: For using this file, you must adjust some settings such as IP addresses to your environment.
 # These settings are highlighted by a TODO comment
 
+#replace the following hosts
+# 'kafka-broker' with the name or IP of your kafka-broker
+
 version: '3.8'
 services:
   kafka1:
@@ -16,10 +19,10 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
-      # TODO: Adjust advertised IP address from 'localhost:9092' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
+      # TODO: Adjust advertised IP address from 'kafka-broker:9092' to hostname or ip address of running system
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://kafka-broker:9092
 
-      # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
+      # Configure replication factors for autocreate topics, consumer offsets, log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
@@ -58,8 +61,8 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://:9092
-      # TODO: Adjust advertised IP address from 'localhost:9093' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://localhost:9093
+      # TODO: Adjust advertised IP address from 'kafka-broker:9093' to hostname or ip address of running system
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka2:29092,EXTERNAL://kafka-broker:9093
 
       # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3

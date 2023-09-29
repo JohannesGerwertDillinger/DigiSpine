@@ -13,10 +13,10 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
-      # TODO: Adjust advertised IP address from 'localhost:9092' to hostname or ip address of running system
-      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://localhost:9092
+      # TODO: Adjust advertised IP address from 'kafka-broker:9092' to hostname or ip address of running system
+      KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://kafka-broker:9092
 
-      # Configure replication factors for autocreate topics, consumer offsets,log-topic and re-balance delay
+      # Configure replication factors for autocreate topics, consumer offsets, log-topic and re-balance delay
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
