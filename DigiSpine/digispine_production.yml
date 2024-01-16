@@ -37,6 +37,12 @@ services:
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
 
+      # Required to enable Confluent Schema Registry
+      KAFKA_CONFLUENT_SUPPORT_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "http://schemaregistry:8085"
+      KAFKA_CONFLUENT_VALUE_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_KEY_SCHEMA_VALIDATION: "true"
+
     volumes:
       - kafka1-data:/var/lib/kafka/data
 
@@ -79,6 +85,12 @@ services:
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
 
+      # Required to enable Confluent Schema Registry
+      KAFKA_CONFLUENT_SUPPORT_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "http://schemaregistry:8085"
+      KAFKA_CONFLUENT_VALUE_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_KEY_SCHEMA_VALIDATION: "true"
+
     volumes:
       - kafka2-data:/var/lib/kafka/data
 
@@ -120,6 +132,12 @@ services:
       # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
 
+      # Required to enable Confluent Schema Registry
+      KAFKA_CONFLUENT_SUPPORT_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "http://schemaregistry:8085"
+      KAFKA_CONFLUENT_VALUE_SCHEMA_VALIDATION: "true"
+      KAFKA_CONFLUENT_KEY_SCHEMA_VALIDATION: "true"
+
     volumes:
       - kafka3-data:/var/lib/kafka/data
 
@@ -128,6 +146,20 @@ services:
         constraints:
           # TODO: To ensure that kafka instances are not placed on the same VM, you should define different constraints such as manager or worker to ensure that at least two instances run on different VMs
           - "node.role == manager"
+
+  schemaregistry:
+    image: confluentinc/cp-schema-registry:7.2.1
+    hostname: schemaregistry
+    ports:
+      - 18085:8085
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:29092,PLAINTEXT://kafka2:29092,PLAINTEXT://kafka3:29092
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+      SCHEMA_REGISTRY_HOST_NAME: schemaregistry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8085
+      SCHEMA_REGISTRY_SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL: "http"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: INFO
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
 
   kafka-ui:
     container_name: kafka-ui
@@ -145,6 +177,23 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+
+  ksqldbServer:
+    image: confluentinc/cp-ksqldb-server:latest
+    hostname: ksqldbServer
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: kafka1:29092,kafka2:29092,kafka3:29092
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schemaregistry:8085
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:latest
+    entrypoint: /bin/sh
+    tty: true
 
 volumes:
   kafka1-data:
