@@ -61,7 +61,8 @@ IMPORTANT: WORK IN PROGRESS
     2023-06-13 12:04:00	user5	page2	view
     ```
 
-## Connect to DigiSpine via Table
+## Connect to DigiSpine
+### 1st approach: Dump messages directly to a table
 
 - deploy [kconnect-console-producer-json.yml](kconnect-console-producer-json.yml)
 - Create a table in RisingWave that connects to DigiSpine / Kafka
@@ -88,19 +89,11 @@ IMPORTANT: WORK IN PROGRESS
   MyCounter 182	2024-03-04 15:28:28	(null)
   MyCounter 183	2024-03-04 15:28:29	(null)
   MyCounter 184	2024-03-04 15:28:30	(null)
-  MyCounter 185	2024-03-04 15:28:31	(null)
-  MyCounter 186	2024-03-04 15:28:32	(null)
-  MyCounter 187	2024-03-04 15:28:33	(null)
-  MyCounter 188	2024-03-04 15:28:34	(null)
-  MyCounter 189	2024-03-04 15:28:35	(null)
-  MyCounter 190	2024-03-04 15:28:36	(null)
-  MyCounter 191	2024-03-04 15:28:37	(null)
-  MyCounter 192	2024-03-04 15:28:38	(null)
   ```
 
-## Connect to DigiSpine via Stream (unclear when to use)
-
-- Create a source stream in RisingWave that connects to DigiSpine / Kafka
+### 2nd approach: Perform stream processing on messages
+#### Create a stream 
+- Create a source stream in RisingWave that connects to DigiSpine / Kafka and receives messages
     ```sql
     CREATE SOURCE IF NOT EXISTS flugdaten_stream (
     timestamp timestamp with time zone,
@@ -114,7 +107,8 @@ IMPORTANT: WORK IN PROGRESS
     scan.startup.mode='earliest'
     ) FORMAT PLAIN ENCODE JSON;
     ```
-- Create a materialized view that represents data we offer as product. This also defines the data transformation/mapping from streams   
+#### Create a materialized view that combines data/processes data
+- Create a materialized view that performs stream processing/transformation so that we get  data we offer as product. 
     ```sql
     CREATE MATERIALIZED VIEW flugdaten_stream_mv AS
     SELECT flugdaten_value,
