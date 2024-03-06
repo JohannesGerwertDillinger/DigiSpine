@@ -107,7 +107,7 @@ IMPORTANT: WORK IN PROGRESS
     scan.startup.mode='earliest'
     ) FORMAT PLAIN ENCODE JSON;
     ```
-#### Create a materialized view that combines data/processes data
+#### Create a materialized view that combines/processes data
 - Create a materialized view that performs stream processing/transformation so that we get  data we offer as product. 
     ```sql
     CREATE MATERIALIZED VIEW flugdaten_stream_mv AS
@@ -127,3 +127,7 @@ IMPORTANT: WORK IN PROGRESS
   flugdaten_value	total_visits	unique_visitors	last_visit_time
   (null)	        1124079	        0	            (null)
   ```
+
+## Add Apache Superset as Client
+From: 
+- Deploy 

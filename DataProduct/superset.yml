@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  risingwave:
+    image:  apache/superset:latest
+    ports:
+      - "8085:8088"
+    environment:
+      SUPERSET_SECRET_KEY: "Oe3rtNW7Q6da9n/O5mc/FZKGiCAum84R3SfpP6AGLN6F+ajOYP7KM0nk"
+      TALISMAN_ENABLED: "False"
