@@ -3,13 +3,13 @@ version: "3.7"
 services:
   risingwave:
     image:  risingwavelabs/risingwave:latest
-    command: standalone --meta-opts=" --listen-addr 0.0.0.0:5690  --advertise-addr 0.0.0.0:5690 --state-store hummock+minio://hummockadmin:hummockadmin@minio:9000/hummock001 --data-directory hummock_001 --connector-rpc-endpoint 0.0.0.0:50051" --frontend-opts=" --listen-addr 0.0.0.0:4566 --advertise-addr 0.0.0.0:4566 --meta-addr http://0.0.0.0:5690 "  --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  --compactor-opts=" --listen-addr 0.0.0.0:6660  --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
+    command: standalone --meta-opts=" --backend etcd --etcd-endpoints etcd:2388  --listen-addr 0.0.0.0:5690  --advertise-addr 0.0.0.0:5690 --state-store hummock+minio://hummockadmin:hummockadmin@minio:9000/hummock001 --data-directory hummock_001 --connector-rpc-endpoint 0.0.0.0:50051" --frontend-opts=" --listen-addr 0.0.0.0:4566 --advertise-addr 0.0.0.0:4566 --meta-addr http://0.0.0.0:5690 "  --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  --compactor-opts=" --listen-addr 0.0.0.0:6660  --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
 
     ports:
       - "4566:4566"
       - "5691:5691"
 
-  minio:
+  minio: # object store for risingwave
     image: quay.io/minio/minio:latest
     command: server /data --console-address ":9001"
     ports:
@@ -21,5 +21,13 @@ services:
       MINIO_ROOT_PASSWORD: hummockadmin
       MINIO_ROOT_USER: hummockadmin
 
+  etcd: # Key value store for metdata of risingwave
+    image: "quay.io/coreos/etcd:v3.5.10"
+    command:
+      /usr/local/bin/etcd --listen-client-urls http://0.0.0.0:2388 --advertise-client-urls http://etcd:2388 --name risedev-meta --auto-compaction-mode periodic --auto-compaction-retention 1m --snapshot-count 10000 --data-dir /etcd-data
+    volumes:
+      - "etcd-data:/etcd-data"
+
 volumes:
   minio-data:
+  etcd-data:
