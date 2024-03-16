@@ -129,5 +129,6 @@ IMPORTANT: WORK IN PROGRESS
   ```
 
 ## Add Apache Superset as Client
-From: 
+From: https://superset.apache.org/docs/quickstart/  
 - Deploy 
+- https://preset.io/blog/2020-05-18-install-db-drivers/
