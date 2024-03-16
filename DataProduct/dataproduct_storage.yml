@@ -11,7 +11,8 @@ services:
 
   minio: # object store for risingwave
     image: quay.io/minio/minio:latest
-    command: server /data --console-address ":9001"
+    entrypoint: sh
+    command: -c 'mkdir -p /data/hummock001 && minio server /data'
     ports:
       - "9005:9000"
       - "9006:9001"
@@ -20,13 +21,20 @@ services:
     environment:
       MINIO_ROOT_PASSWORD: hummockadmin
       MINIO_ROOT_USER: hummockadmin
+      MINIO_CONSOLE_ADDRESS: 0.0.0.0:9001
 
-  etcd: # Key value store for metdata of risingwave
+  etcd: # Key value store for metadata of risingwave
     image: "quay.io/coreos/etcd:v3.5.10"
-    command:
-      /usr/local/bin/etcd --listen-client-urls http://0.0.0.0:2388 --advertise-client-urls http://etcd:2388 --name risedev-meta --auto-compaction-mode periodic --auto-compaction-retention 1m --snapshot-count 10000 --data-dir /etcd-data
+
     volumes:
       - "etcd-data:/etcd-data"
+    environment:
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2388
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2388
+      ETCD_NAME: risedev-meta
+      ETCD_DATA_DIR: /etcd-data
+      ETCD_AUTO_COMPACTION_MODE: periodic
+      ETCD_AUTO_COMPACTION_RETENTION: 1m
 
 volumes:
   minio-data:
