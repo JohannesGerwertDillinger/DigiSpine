@@ -5,9 +5,10 @@ services:
     image:  risingwavelabs/risingwave:latest
     command: >
       standalone
-      --meta-opts=" --backend etcd --etcd-endpoints etcd:2388  --listen-addr 0.0.0.0:5690  --advertise-addr 0.0.0.0:5690 --dashboard-host 0.0.0.0:5691 --state-store hummock+minio://hummockadmin:hummockadmin@minio:9000/hummock001 --data-directory hummock_001 --connector-rpc-endpoint 0.0.0.0:50051" 
-      --frontend-opts=" --listen-addr 0.0.0.0:4566 --advertise-addr 0.0.0.0:4566 --meta-addr http://0.0.0.0:5690 "  
-      --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --prometheus-listener-addr 0.0.0.0:1250 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  --compactor-opts=" --listen-addr 0.0.0.0:6660  --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
+      --meta-opts=" --backend etcd --etcd-endpoints etcd:2388  --listen-addr 0.0.0.0:5690  --advertise-addr 0.0.0.0:5690 --dashboard-host 0.0.0.0:5691 --prometheus-host 0.0.0.0:1250 --prometheus-endpoint http://prometheus:9500 --state-store hummock+minio://hummockadmin:hummockadmin@minio:9000/hummock001 --data-directory hummock_001 --connector-rpc-endpoint 0.0.0.0:50051" 
+      --frontend-opts=" --listen-addr 0.0.0.0:4566 --health-check-listener-addr 0.0.0.0:6786 --prometheus-listener-addr 0.0.0.0:1250 --advertise-addr 0.0.0.0:4566 --meta-addr http://0.0.0.0:5690 "  
+      --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --prometheus-listener-addr 0.0.0.0:1250 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  
+      --compactor-opts=" --listen-addr 0.0.0.0:6660  --prometheus-listener-addr 0.0.0.0:1250 --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
 
     ports:
       - "4566:4566"
@@ -40,6 +41,22 @@ services:
       ETCD_AUTO_COMPACTION_MODE: periodic
       ETCD_AUTO_COMPACTION_RETENTION: 1m
 
+  prometheus:
+    image: "prom/prometheus:latest"
+    command: >
+      --config.file=/prometheus/prometheus.yml
+      --storage.tsdb.path=/prometheus
+      --web.console.libraries=/usr/share/prometheus/console_libraries
+      --web.console.templates=/usr/share/prometheus/consoles
+      --web.listen-address=0.0.0.0:9500
+      --storage.tsdb.retention.time=30d
+    ports:
+      - "9500:9500"
+    volumes:
+      - "prometheus-data:/prometheus"
+
+
 volumes:
   minio-data:
   etcd-data:
+  prometheus-data:
