@@ -132,3 +132,14 @@ IMPORTANT: WORK IN PROGRESS
 From: https://superset.apache.org/docs/quickstart/  
 - Deploy 
 - https://preset.io/blog/2020-05-18-install-db-drivers/
+
+## Data product
+- Deploy Data product storage
+- Upload files to volumes via portainer
+  - Upload prometheus.yml to root directory of prometheus volume
+  - Upload grafana.ini to root directory of grafana volume
+  - Configure dashboards:                     
+    - Login to grafana container
+    - create directory `/var/lib/grafana/provisioning/dashboards`
+    - create directory `/var/lib/grafana/provisioning/datasources`
+    
