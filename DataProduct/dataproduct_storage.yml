@@ -7,7 +7,7 @@ services:
       standalone
       --meta-opts=" --backend etcd --etcd-endpoints etcd:2388  --listen-addr 0.0.0.0:5690  --advertise-addr 0.0.0.0:5690 --dashboard-host 0.0.0.0:5691 --state-store hummock+minio://hummockadmin:hummockadmin@minio:9000/hummock001 --data-directory hummock_001 --connector-rpc-endpoint 0.0.0.0:50051" 
       --frontend-opts=" --listen-addr 0.0.0.0:4566 --advertise-addr 0.0.0.0:4566 --meta-addr http://0.0.0.0:5690 "  
-      --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  --compactor-opts=" --listen-addr 0.0.0.0:6660  --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
+      --compute-opts="--listen-addr 0.0.0.0:5688 --advertise-addr 0.0.0.0:5688 --prometheus-listener-addr 0.0.0.0:1250 --async-stack-trace verbose --connector-rpc-endpoint 0.0.0.0:50051 --role both --meta-address http://0.0.0.0:5690"  --compactor-opts=" --listen-addr 0.0.0.0:6660  --advertise-addr 0.0.0.0:6660 --meta-address http://0.0.0.0:5690"
 
     ports:
       - "4566:4566"
