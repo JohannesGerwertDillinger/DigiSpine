@@ -24,8 +24,13 @@ services:
     volumes:
       - "minio-data:/data"
     environment:
+      MINIO_CI_CD: "1"
+      MINIO_PROMETHEUS_AUTH_TYPE: public
+      MINIO_PROMETHEUS_URL: "http://prometheus:9500"
       MINIO_ROOT_PASSWORD: hummockadmin
       MINIO_ROOT_USER: hummockadmin
+      MINIO_DOMAIN: "minio"
+      MINIO_ADDRESS: 0.0.0.0:9000
       MINIO_CONSOLE_ADDRESS: 0.0.0.0:9001
 
   etcd: # Key value store for metadata of risingwave
