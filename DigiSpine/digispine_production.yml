@@ -148,7 +148,7 @@ services:
           - "node.role == manager"
 
   schemaregistry:
-    image: confluentinc/cp-schema-registry:7.2.1
+    image: confluentinc/cp-schema-registry:latest
     hostname: schemaregistry
     ports:
       - 18085:8085
