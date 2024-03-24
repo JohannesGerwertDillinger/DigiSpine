@@ -30,7 +30,9 @@ services:
       CLUSTER_ID: 'biWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
-      KAFKA_LOG4J_LOGGERS: 'org.apache.kafka.image.loader.MetadataLoader=WARN'
+      # Required to avoid log spamming from MetdataLoader
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: "kafka=WARN,kafka.controller=WARN,kafka.log.LogCleaner=WARN,state.change.logger=WARN,kafka.producer.async.DefaultEventHandler=WARN"
 
       # Required to enable Confluent Schema Registry
       KAFKA_CONFLUENT_SUPPORT_SCHEMA_VALIDATION: "true"
@@ -78,6 +80,7 @@ services:
       DYNAMIC_CONFIG_ENABLED: 'true'
       KAFKA_CLUSTERS_0_NAME: digispine-development
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:29092
+      LOGGING_LEVEL_COM_PROVECTUS: warn
 
     healthcheck:
       test: ["CMD-SHELL", "wget -nv -t1 --spider 'http://localhost:8080'"]
