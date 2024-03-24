@@ -31,7 +31,6 @@ services:
       CLUSTER_ID: 'biWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
-      # Required to avoid log spamming from MetdataLoader
       KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
       KAFKA_LOG4J_LOGGERS: "kafka=WARN,kafka.controller=WARN,kafka.log.LogCleaner=WARN,state.change.logger=WARN,kafka.producer.async.DefaultEventHandler=WARN"
 
