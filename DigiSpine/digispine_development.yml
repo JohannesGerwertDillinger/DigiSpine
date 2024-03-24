@@ -34,6 +34,7 @@ services:
       KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
       KAFKA_LOG4J_LOGGERS: "kafka=WARN,kafka.controller=WARN,kafka.log.LogCleaner=WARN,state.change.logger=WARN,kafka.producer.async.DefaultEventHandler=WARN"
 
+
       # Required to enable Confluent Schema Registry
       KAFKA_CONFLUENT_SUPPORT_SCHEMA_VALIDATION: "true"
       KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "http://schemaregistry:8085"
@@ -60,7 +61,7 @@ services:
     image: confluentinc/cp-schema-registry:latest
     hostname: schemaregistry
     ports:
-      - 18085:8085
+      - "18085:8085"
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:29092
       SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
@@ -99,6 +100,9 @@ services:
       KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schemaregistry:8085
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_LOG4J_ROOT_LOGLEVEL: "WARN"
+      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+      KSQL_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
 
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:latest
