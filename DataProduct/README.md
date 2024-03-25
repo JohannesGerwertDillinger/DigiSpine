@@ -128,10 +128,7 @@ IMPORTANT: WORK IN PROGRESS
   (null)	        1124079	        0	            (null)
   ```
 
-## Add Apache Superset as Client
-From: https://superset.apache.org/docs/quickstart/  
-- Deploy 
-- https://preset.io/blog/2020-05-18-install-db-drivers/
+
 
 ## Data product
 - Deploy Data product storage
@@ -140,7 +137,11 @@ From: https://superset.apache.org/docs/quickstart/
   - Upload grafana.ini to root directory of grafana volume
   - Configure dashboards:                     
     - Login to grafana container
-    - create directory `/var/lib/grafana/provisioning/dashboards`
-    - create directory `/var/lib/grafana/provisioning/datasources`
-    - Upload files 
-    
+    - create directory `/var/lib/grafana/provisioning/dashboards` (Note: If directory is created on volume outside the container, then the path is `/provisioning/dashboards)
+    - create directory `/var/lib/grafana/provisioning/datasources` (Note: If directory is created on volume outside the container, then the path is `/provisioning/dashboards)
+    - Upload files from grafana/provisioning directory 
+
+## Add Apache Superset as Client
+From: https://superset.apache.org/docs/quickstart/
+- Deploy `superset.yml`
+- https://preset.io/blog/2020-05-18-install-db-drivers/
