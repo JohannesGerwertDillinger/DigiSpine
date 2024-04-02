@@ -23,11 +23,11 @@ services:
       - >
         echo -e "\n--\n+> Start producing Data";
         while true; 
-        do echo {\"wertInCelsius\":$$(shuf --input-range=900-1800  --head-count=1)}; 
+        do echo {\"wertInCelsius\":$$(shuf --input-range=900-1800  --head-count=1) , \"timestamp\":$$(date +%s) \}; 
         sleep 1; 
         done | 
         /usr/bin/kafka-avro-console-producer 
         --bootstrap-server kafka-broker:9092 
         --topic example-topic2 
         --property schema.registry.url=http://kafka-broker:8081 
-        --property value.schema='{"type":"record","name":"ho_messwert","fields":[{"name":"wertInCelsius","type":"float"}]}'
+        --property value.schema='{"type":"record","name":"ho_messwert","fields":[{"name":"wertInCelsius","type":"float"}, {"name":"timestamp","type":"long", "default": 0} ]}'
