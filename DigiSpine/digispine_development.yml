@@ -13,7 +13,7 @@ services:
 
       #Define the ports used for broker, controller and external
       KAFKA_LISTENERS: BROKER://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://:9092
-      # TODO: Adjust advertised IP address from 'kafka-broker:9092' to hostname or ip address of running system
+      # TODO: Adjust advertised IP address from 'kafka-broker:9092' to hostname or ip address of running system (not localhost)
       KAFKA_ADVERTISED_LISTENERS: BROKER://kafka1:29092,EXTERNAL://kafka-broker:9092
 
       # Configure replication factors for autocreate topics, consumer offsets, log-topic and re-balance delay
@@ -27,7 +27,6 @@ services:
       KAFKA_PROCESS_ROLES: 'controller,broker'
       KAFKA_NODE_ID: 1
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093'
-      # TODO: Generate ONE kafka-ID using ./bin/kafka-storage.sh random-uuid and set it to all instances
       CLUSTER_ID: 'biWo7IWazngRchmPES6q5A=='
 
       # Required to avoid log spamming from MetdataLoader
@@ -54,7 +53,6 @@ services:
     deploy:
       placement:
         constraints:
-          # TODO: To ensure that kafka instances are not placed on the same VM, you should define different constraints such as manager or worker to ensure that at least two instances run on different VMs
           - "node.role == manager"
 
   schemaregistry:
